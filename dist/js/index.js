@@ -1,7 +1,7 @@
 let cardValue;
 let card;
 let arr = [];
-let allCards = document.querySelectorAll('.memory-card');
+let allCards = document.querySelectorAll(".memory-card");
 function shuffle() {
     const memoryCards = document.querySelector(".memory-cards");
     if (memoryCards) {
@@ -12,19 +12,6 @@ function shuffle() {
         }
     }
 }
-shuffle();
-allCards.forEach(card => {
-    let clickedCard = () => {
-        if (card.classList.contains("flip")) {
-            return;
-        }
-        cardValue = card.getAttribute('data-card');
-        flipper(card);
-        arr.push({ value: cardValue, element: card });
-        compareValue(arr);
-    };
-    card.addEventListener("click", clickedCard);
-});
 function compareValue(array) {
     if (array.length < 2) {
         return;
@@ -33,25 +20,39 @@ function compareValue(array) {
     let secondLastIndex = array.length - 2;
     if (array[lastIndex].value === array[secondLastIndex].value) {
         console.log("wohoo");
-        arr.forEach(cardObj => {
-            cardObj.element.classList.add("flip");
-            cardObj.element.removeEventListener("click", cardObj.element['clickedCard']);
+        arr.forEach((cardObj) => {
+            console.log(cardObj);
+            cardObj.card.classList.add("flip");
+            cardObj.card.removeEventListener("click", cardObj.card["clickedCard"]);
         });
         arr.length = 0;
     }
     else {
         console.log("Dum i huvet är du!");
         setTimeout(() => {
-            arr.forEach(cardObj => {
-                unflip(cardObj.element);
+            arr.forEach((cardObj) => {
+                unflip(cardObj.card);
             });
             arr.length = 0;
-        }, 1500);
+        }, 200);
     }
 }
-const flipper = (param) => {
+const flip = (param) => {
     param.classList.add("flip");
 };
 const unflip = (param) => {
     param.classList.remove("flip");
 };
+shuffle();
+allCards.forEach((card) => {
+    let clickedCard = () => {
+        if (card.classList.contains("flip")) {
+            return;
+        }
+        cardValue = card.getAttribute("data-card");
+        flip(card);
+        arr.push({ value: cardValue, card: card });
+        compareValue(arr);
+    };
+    card.addEventListener("click", clickedCard);
+});

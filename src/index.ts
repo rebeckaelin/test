@@ -14,7 +14,7 @@ let card: any;
 
 type CardObject = {
   value: string;
-  element: Element;
+  card: Element;
 };
 
 let arr: CardObject[] = [];
@@ -25,7 +25,7 @@ let allCards = document.querySelectorAll(".memory-card");
 
 // *********** FUNKTIONER ***********
 
-function shuffle() {
+function shuffle(): void {
   const memoryCards = document.querySelector(".memory-cards");
   if (memoryCards) {
     const cardsArray = Array.from(memoryCards.children);
@@ -37,7 +37,7 @@ function shuffle() {
   }
 }
 
-function compareValue(array: CardObject[]) {
+function compareValue(array: CardObject[]): void {
   if (array.length < 2) {
     return;
   }
@@ -48,11 +48,10 @@ function compareValue(array: CardObject[]) {
     console.log("wohoo");
 
     arr.forEach((cardObj) => {
-      cardObj.element.classList.add("flip");
-      cardObj.element.removeEventListener(
-        "click",
-        cardObj.element["clickedCard"]
-      );
+      console.log(cardObj);
+
+      cardObj.card.classList.add("flip");
+      cardObj.card.removeEventListener("click", cardObj.card["clickedCard"]);
     });
 
     arr.length = 0;
@@ -60,7 +59,7 @@ function compareValue(array: CardObject[]) {
     console.log("Dum i huvet är du!");
     setTimeout(() => {
       arr.forEach((cardObj) => {
-        unflip(cardObj.element);
+        unflip(cardObj.card);
       });
 
       arr.length = 0;
@@ -68,11 +67,11 @@ function compareValue(array: CardObject[]) {
   }
 }
 
-const flip = (param) => {
+const flip = (param): void => {
   param.classList.add("flip");
 };
 
-const unflip = (param) => {
+const unflip = (param): void => {
   param.classList.remove("flip");
 };
 
@@ -80,14 +79,14 @@ const unflip = (param) => {
 
 shuffle();
 
-allCards.forEach((card) => {
+allCards.forEach((card: Element): void => {
   let clickedCard = () => {
     if (card.classList.contains("flip")) {
       return;
     }
     cardValue = card.getAttribute("data-card");
     flip(card);
-    arr.push({value: cardValue, element: card});
+    arr.push({value: cardValue, card: card});
     compareValue(arr);
   };
 
